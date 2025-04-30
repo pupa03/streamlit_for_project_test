@@ -32,7 +32,7 @@ df = pd.merge(
     on="requested_amphoe",
     how="left"  # ใช้ 'left' เพื่อคงข้อมูล df หลักไว้ทั้งหมด
 )
-# st.dataframe(df.head())
+st.dataframe(df.head())
 
 
 
@@ -66,3 +66,30 @@ folium.GeoJson(
 st_folium(m, height=1600)
 
 
+
+
+
+# ดึงรหัสอำเภอทั้งหมดจาก GeoJSON
+geo_ids = set([
+    feature["properties"]["CC_2"]
+    for feature in amphoe_geojson["features"]
+])
+st.write(len(geo_ids))
+st.dataframe(geo_ids)
+# ดึงรหัสอำเภอที่มีใน df (ค่าฝุ่น)
+df_ids = set(df["amphoe_id"].dropna().astype(int).astype(str))
+
+st.dataframe(df_ids)
+# หาอำเภอที่ไม่มีข้อมูล (อยู่ใน geo แต่ไม่อยู่ใน df)
+missing_ids = geo_ids - df_ids
+
+# ดึงชื่ออำเภอที่ไม่มีข้อมูล
+missing_names = [
+    feature["properties"]["NAME_2"]
+    for feature in amphoe_geojson["features"]
+    if feature["properties"]["CC_2"] in missing_ids
+]
+
+# แสดงผล
+st.markdown(f"### ❌ อำเภอที่ไม่มีค่าฝุ่น (pm2.5): {len(missing_names)} รายการ")
+st.write(missing_names)
