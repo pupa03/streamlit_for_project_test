@@ -1,26 +1,46 @@
 import streamlit as st
+import leafmap.foliumap as leafmap
 
-st.title("🎈 My new app")
-st.write(
-    "Let's start building! For help and inspiration, head over to [docs.streamlit.io](https://docs.streamlit.io/)."
+# st.set_page_config(layout="wide")
+st.set_page_config(page_title="Home", page_icon="🏠")
+
+# Customize the sidebar
+# markdown = """
+# A Streamlit map template
+# <https://github.com/opengeos/streamlit-map-template>
+# """
+
+# st.page_link("streamlit_app.py", label="Home", icon="🏠")
+# st.page_link("pages/_heatmap1.py", label="Page 1", icon="1️⃣")
+# st.page_link("pages/_aqi.py", label="Page 2", icon="2️⃣")
+# st.page_link("http://www.google.com", label="Google", icon="🌎")
+
+# st.sidebar.title("About")
+# st.sidebar.info(markdown)
+# logo = "https://i.imgur.com/UbOXYAU.png"
+# st.sidebar.image(logo)
+
+# Customize page title
+st.title("Streamlit for Geospatial Applications")
+
+st.markdown(
+    """
+    This multipage app template demonstrates various interactive web apps created using [streamlit](https://streamlit.io) and [leafmap](https://leafmap.org). It is an open-source project and you are very welcome to contribute to the [GitHub repository](https://github.com/opengeos/streamlit-map-template).
+    """
 )
 
-st.write('Test pls')
-st.write('Help pls')
+st.header("Instructions")
 
-import streamlit as st
+markdown = """
+1. For the [GitHub repository](https://github.com/opengeos/streamlit-map-template) or [use it as a template](https://github.com/opengeos/streamlit-map-template/generate) for your own project.
+2. Customize the sidebar by changing the sidebar text and logo in each Python files.
+3. Find your favorite emoji from https://emojipedia.org.
+4. Add a new app to the `pages/` directory with an emoji in the file name, e.g., `1_🚀_Chart.py`.
 
-genre = st.radio(
-    "What's your favorite movie genre",
-    [":rainbow[Comedy]", "***Drama***", "Documentary :movie_camera:"],
-    captions=[
-        "Laugh out loud.",
-        "Get the popcorn.",
-        "Never stop learning.",
-    ],
-)
+"""
 
-if genre == ":rainbow[Comedy]":
-    st.write("You selected comedy.")
-else:
-    st.write("You didn't select comedy.")
+st.markdown(markdown)
+
+m = leafmap.Map(minimap_control=True)
+m.add_basemap("OpenTopoMap")
+m.to_streamlit(height=500)
